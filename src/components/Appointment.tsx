@@ -2,11 +2,11 @@ import React, { CSSProperties, ReactNode } from 'react';
 import { useAppointment } from '../hooks/useAppointment';
 
 export type AppointmentProps = {
-  children: ReactNode;
   start: Date | number | string;
   end: Date | number | string;
   style?: CSSProperties;
   className?: string;
+  children?: ReactNode;
 };
 
 export function Appointment(props: AppointmentProps) {

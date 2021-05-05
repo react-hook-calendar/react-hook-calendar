@@ -1,17 +1,9 @@
-import {
-  addDays,
-  addWeeks,
-  endOfDay,
-  endOfWeek,
-  startOfDay,
-  startOfWeek,
-  subDays,
-  subWeeks,
-} from 'date-fns';
-import React, { useState, ReactNode, useCallback } from 'react';
+import { endOfDay, endOfWeek, startOfDay, startOfWeek } from 'date-fns';
+import { addDays, addWeeks, subDays, subWeeks } from 'date-fns/fp';
+import React, { useState, ReactNode, useCallback, useMemo } from 'react';
 import { CalendarContext } from '../hooks/useCalendar';
 import { CalendarView } from '../types';
-import { toDate } from '../util';
+import { parseTime, toDate } from '../util';
 
 export type CalendarProps = {
   /** The view that the calendar should use. This can be changed with */
@@ -22,6 +14,12 @@ export type CalendarProps = {
   className?: string;
   /** All the elements within the calendar that might consume the calendar context. */
   children?: ReactNode;
+  /** Limit the view to appointments after this time */
+  timeStart?: string;
+  /** Limit the view to appointments before this time */
+  timeEnd?: string;
+  /** Configure the day, that the week should start on */
+  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 /**
@@ -30,74 +28,64 @@ export type CalendarProps = {
 export function Calendar({
   defaultView = 'week',
   initialDate = new Date(),
+  timeStart = '0:00',
+  timeEnd = '24:00',
+  weekStartsOn,
   className,
   children,
 }: CalendarProps) {
-  const [view, setViewInternal] = useState(defaultView);
-  const [viewPeriod, setViewPeriod] = useState(() => ({
-    start: getViewPeriodStart(view, toDate(initialDate)),
-    end: getViewPeriodEnd(view, toDate(initialDate)),
-  }));
+  // The focus date is the date that is currently shown
+  const [focusDate, setFocusDate] = useState(toDate(initialDate));
+  // Stores the current view
+  const [view, setView] = useState(defaultView);
 
-  const setView = useCallback(
-    function setView(newView: CalendarView) {
-      if (view !== newView) {
-        setViewInternal(newView);
-        if (newView === 'day') {
-          setViewPeriod(period => ({ ...period, end: endOfDay(period.start) }));
-        } else if (newView === 'week') {
-          setViewPeriod(period => ({
-            start: startOfWeek(period.start),
-            end: endOfDay(period.start),
-          }));
-        }
-      }
-    },
-    [view, viewPeriod]
+  // The view period reacts to changes in view and focus date
+  const viewPeriod = useMemo(
+    () => ({
+      start: getViewPeriodStart(view, focusDate, weekStartsOn),
+      end: getViewPeriodEnd(view, focusDate, weekStartsOn),
+    }),
+    [view, focusDate]
   );
 
-  const goForward = useCallback(
-    function goForward() {
-      setViewPeriod(period => {
-        switch (view) {
-          case 'day':
-            return { start: addDays(period.start, 1), end: addDays(period.end, 1) };
-          case 'week':
-            return { start: addWeeks(period.start, 1), end: addWeeks(period.end, 1) };
-          default:
-            return period;
-        }
-      });
-    },
-    [view, viewPeriod]
-  );
+  const viewTimes = useMemo(() => ({ start: parseTime(timeStart), end: parseTime(timeEnd) }), [
+    timeStart,
+    timeEnd,
+  ]);
 
-  const goBackward = useCallback(
-    function goBackward() {
-      setViewPeriod(period => {
-        switch (view) {
-          case 'day':
-            return { start: subDays(period.start, 1), end: subDays(period.end, 1) };
-          case 'week':
-            return { start: subWeeks(period.start, 1), end: subWeeks(period.end, 1) };
-          default:
-            return period;
-        }
-      });
-    },
-    [view, viewPeriod]
-  );
+  const goForward = useCallback(() => setFocusDate(view === 'day' ? addDays(1) : addWeeks(1)), [
+    view,
+  ]);
+
+  const goBackward = useCallback(() => setFocusDate(view === 'day' ? subDays(1) : subWeeks(1)), [
+    view,
+  ]);
 
   return (
-    <CalendarContext.Provider value={{ view, setView, viewPeriod, goForward, goBackward }}>
+    <CalendarContext.Provider
+      value={{
+        view,
+        setView,
+        date: focusDate,
+        setDate: setFocusDate,
+        viewPeriod,
+        goForward,
+        goBackward,
+        viewTimes,
+      }}
+    >
       <div className={className}>{children}</div>
     </CalendarContext.Provider>
   );
 }
 
-function getViewPeriodStart(view: CalendarView, referenceDate: Date): Date {
+function getViewPeriodStart(
+  view: CalendarView,
+  referenceDate: Date,
+  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+): Date {
   if (view === 'week') {
-    return startOfWeek(referenceDate);
+    return startOfWeek(referenceDate, { weekStartsOn });
   }
   if (view === 'day') {
     return startOfDay(referenceDate);
@@ -105,9 +93,13 @@ function getViewPeriodStart(view: CalendarView, referenceDate: Date): Date {
   throw new Error('Unknown view value `' + view + '`.');
 }
 
-function getViewPeriodEnd(view: CalendarView, referenceDate: Date): Date {
+function getViewPeriodEnd(
+  view: CalendarView,
+  referenceDate: Date,
+  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+): Date {
   if (view === 'week') {
-    return endOfWeek(referenceDate);
+    return endOfWeek(referenceDate, { weekStartsOn });
   }
   if (view === 'day') {
     return endOfDay(referenceDate);

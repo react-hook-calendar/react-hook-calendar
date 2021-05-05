@@ -13,7 +13,7 @@ export type UseAppointmentResult = {
   style: CSSProperties;
   inView: boolean;
   /** An interval with the parsed Dates */
-  interval: Interval;
+  interval: { start: Date; end: Date };
 };
 
 /**
@@ -32,10 +32,18 @@ export type UseAppointmentResult = {
  * ```
  */
 export function useAppointment(config: UseAppointmentConfig): UseAppointmentResult {
-  const { view, viewPeriod } = useCalendar();
+  const { view, viewPeriod, viewTimes } = useCalendar();
   return useMemo(() => {
     const interval = { start: toDate(config.start), end: toDate(config.end) };
-    if (!areIntervalsOverlapping(viewPeriod, interval)) {
+    // This is the rendered start time. This time is at least the displayed minimum time of the cal.
+    const startTime = Math.max(viewTimes.start, estMillisecondsSinceStartOfDay(interval.start));
+    // This is the rendered end time. This time is at most the displayed maximum time of the cal.
+    const endTime = Math.min(viewTimes.end, estMillisecondsSinceStartOfDay(interval.end));
+    if (
+      !areIntervalsOverlapping(viewPeriod, interval) ||
+      endTime < viewTimes.start ||
+      startTime > viewTimes.end
+    ) {
       return {
         style: {},
         interval,
@@ -43,10 +51,10 @@ export function useAppointment(config: UseAppointmentConfig): UseAppointmentResu
       };
     }
     // The column in the grid where we want to render this appoinment slot
-    const column = differenceInDays(viewPeriod.start, interval.start) + 1;
+    const column = differenceInDays(interval.start, viewPeriod.start) + 1;
     // The rows in the grid where we want to render this appointment slot
-    const gridRowStart = getHours(interval.start) * 4 + Math.round(getMinutes(interval.start) / 15);
-    const gridRowEnd = getHours(interval.end) * 4 + Math.round(getMinutes(interval.end) / 15);
+    const gridRowStart = Math.round((startTime - viewTimes.start) / (15 * 60 * 1000)) + 1;
+    const gridRowEnd = Math.round((endTime - viewTimes.start) / (15 * 60 * 1000)) + 1;
     return {
       style: {
         gridColumnStart: column,
@@ -57,5 +65,9 @@ export function useAppointment(config: UseAppointmentConfig): UseAppointmentResu
       interval,
       inView: true,
     };
-  }, [config.start, config.end, view, viewPeriod]);
+  }, [config.start, config.end, view, viewPeriod, viewTimes.start, viewTimes.end]);
+}
+
+function estMillisecondsSinceStartOfDay(date: Date) {
+  return (getHours(date) * 60 + getMinutes(date)) * 60 * 1000;
 }

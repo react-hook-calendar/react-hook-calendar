@@ -4,18 +4,24 @@ import { CalendarView } from '../types';
 
 export type CalendarContextType = {
   /** The view that the calendar is currently displaying */
+  date: Date;
   view: CalendarView;
   viewPeriod: Interval;
+  viewTimes: { start: number; end: number };
   // Controls
+  setDate: (date: Date) => void;
   setView: (view: CalendarView) => void;
   goForward: () => void;
   goBackward: () => void;
 };
 
 export const CalendarContext = createContext<CalendarContextType>({
+  date: new Date(),
   view: 'week',
   viewPeriod: { start: startOfWeek(new Date()), end: endOfWeek(new Date()) },
+  viewTimes: { start: 0, end: 24 * 60 * 60 * 1000 },
   setView: () => {},
+  setDate: () => {},
   goForward: () => {},
   goBackward: () => {},
 });
