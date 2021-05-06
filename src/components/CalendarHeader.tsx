@@ -1,9 +1,11 @@
 import { eachDayOfInterval } from 'date-fns/esm';
 import React, { CSSProperties, forwardRef, ReactNode } from 'react';
 import { useCalendar } from '../hooks/useCalendar';
+import { CalendarView } from '../types';
 
 type CalendarHeaderInfo = {
   date: Date;
+  view: CalendarView;
 };
 
 export type CalendarHeaderProps = {
@@ -40,7 +42,7 @@ export const CalendarHeader = forwardRef<HTMLDivElement, CalendarHeaderProps>(
   function CalendarHeader(props, ref) {
     const { view, viewPeriod } = useCalendar();
     const days = eachDayOfInterval(viewPeriod);
-    const gridTemplateColumns = view === 'day' ? '100%' : 'repeat(7, 14.3%)';
+    const gridTemplateColumns = view === 'day' ? '100%' : 'repeat(7, 1fr)';
 
     return (
       <div
@@ -50,7 +52,7 @@ export const CalendarHeader = forwardRef<HTMLDivElement, CalendarHeaderProps>(
       >
         {days.map((date, index) => (
           <div key={index} style={{ gridColumnStart: index + 1, gridColumnEnd: index + 1 }}>
-            {props.children({ date })}
+            {props.children({ date, view })}
           </div>
         ))}
       </div>

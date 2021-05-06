@@ -3,7 +3,7 @@ import { useCalendar } from '../hooks/useCalendar';
 
 type GridLength = '30 min' | '1 hour' | '2 hours' | '4 hours';
 
-export type GridProps = {
+export type CalendarGridProps = {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
@@ -19,7 +19,12 @@ function gridLenghtToQuaterHours(length: GridLength) {
   }[length];
 }
 
-export function Grid({ children, className, style, length = '2 hours' }: GridProps) {
+export function CalendarGrid({
+  children,
+  className,
+  style,
+  length = '2 hours',
+}: CalendarGridProps) {
   const { view, viewTimes } = useCalendar();
   const numDaysDisplayed = view === 'day' ? 1 : 7;
   const quaterHours = gridLenghtToQuaterHours(length);

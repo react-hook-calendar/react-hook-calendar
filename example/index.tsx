@@ -26,7 +26,14 @@ import {
   setMinutes,
   startOfWeek,
 } from 'date-fns';
-import { Calendar, CalendarBody, CalendarHeader, Grid, useAppointment, useCalendar } from '../';
+import {
+  Calendar,
+  CalendarBody,
+  CalendarHeader,
+  CalendarGrid,
+  useAppointment,
+  useCalendar,
+} from '../';
 
 const timezoneOffset = new Date().getTimezoneOffset() / -60;
 
@@ -114,7 +121,7 @@ function CustomCalendar() {
           </Box>
           <Box h="100%" flexGrow={1} as={CalendarBody}>
             <Box
-              as={Grid}
+              as={CalendarGrid}
               length="1 hour"
               borderTopWidth="1px"
               borderLeftWidth="1px"
