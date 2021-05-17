@@ -99,7 +99,15 @@ function CustomCalendar() {
         <PageControl />
         <ViewControl />
       </Flex>
-      <Flex flexGrow={1} direction="column" w="100%" bg="white" rounded="lg" overflow="hidden">
+      <Flex
+        flexGrow={1}
+        flexShrink={1}
+        direction="column"
+        w="100%"
+        bg="white"
+        rounded="lg"
+        overflow="hidden"
+      >
         <Flex borderColor="blue.600" borderBottomWidth="2px">
           <Center w="20" flexShrink={0} color="gray.500" fontSize="0.875rem">
             GMT{timezoneOffset < 0 ? timezoneOffset : `+${timezoneOffset}`}
