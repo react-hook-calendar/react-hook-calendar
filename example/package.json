@@ -1,11 +1,10 @@
 {
   "name": "example",
   "version": "0.1.0",
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "start": "esbuild --serve dist",
+    "build": "rm -rf ./dist && esbuild --define:process.env.NODE_ENV=\\\"production\\\" --bundle index.tsx --outfile=dist/bundle.js --minify --sourcemap && cp index.html dist/index.html"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.10",

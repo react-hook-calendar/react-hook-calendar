@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": false,
-    "target": "es5",
-    "module": "commonjs",
+    "target": "es6",
+    "module": "es2015",
     "jsx": "react",
     "moduleResolution": "node",
     "noImplicitAny": false,

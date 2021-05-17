@@ -45,7 +45,7 @@ import {
   Calendar,
   CalendarBody,
   CalendarHeader,
-  Grid,
+  CalendarGrid,
   Appointment,
   useCalendar,
 } from 'react-hook-calendar';
@@ -77,7 +77,7 @@ function MyCalendar() {
         )}
       </CalendarHeader>
       <CalendarBody>
-        <Grid className="border-gray-100 border-t border-l" />
+        <CalendarGrid className="border-gray-100 border-t border-l" />
         {appointments.map(appointment => (
           <Appointment
             start={appointment.start}
