@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "esbuild --serve dist",
+    "start": "esbuild --define:process.env.NODE_ENV=\\\"development\\\" --bundle index.tsx --outfile=bundle.js --sourcemap --servedir=.",
     "build": "rm -rf ./dist && esbuild --define:process.env.NODE_ENV=\\\"production\\\" --bundle index.tsx --outfile=dist/bundle.js --minify --sourcemap && cp index.html dist/index.html"
   },
   "dependencies": {
