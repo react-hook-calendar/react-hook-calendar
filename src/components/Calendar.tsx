@@ -10,8 +10,6 @@ export type CalendarProps = {
   defaultView?: CalendarView;
   /** A date that should be shown at the start. Defaults to today. */
   initialDate?: Date | string | number;
-  /** A css class name that will be applied to the calendar surrounding div. */
-  className?: string;
   /** All the elements within the calendar that might consume the calendar context. */
   children?: ReactNode;
   /** Limit the view to appointments after this time */
@@ -31,7 +29,6 @@ export function Calendar({
   timeStart = '0:00',
   timeEnd = '24:00',
   weekStartsOn,
-  className,
   children,
 }: CalendarProps) {
   // The focus date is the date that is currently shown
@@ -74,7 +71,7 @@ export function Calendar({
         viewTimes,
       }}
     >
-      <div className={className}>{children}</div>
+      {children}
     </CalendarContext.Provider>
   );
 }

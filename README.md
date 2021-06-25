@@ -30,7 +30,7 @@ React Hook Calendar manages the logic and calculations of the calendar while the
 ## Getting Started
 
 Install React Hook Calendar via NPM.
-React Hook Calendar requires React 16 as a peer dependency.
+React Hook Calendar requires React 16 or higher as a peer dependency.
 
 ```
 npm install react-hook-calendar
@@ -124,13 +124,12 @@ These edge cases might not be part of all applications of this library, but many
 ### `<Calendar />`
 
 The `Calendar` component creates a new calendar context and handles the calendar state management.
-The calendar context can be consumes via the [`useCalendar()`](#useCalendar) hook.
+The calendar context can be consumed via the [`useCalendar()`](#useCalendar) hook.
 
 | Property     | Default      | Description                                                                      |
 | ------------ | ------------ | -------------------------------------------------------------------------------- |
 | defaultView  | `week`       | The view that the calendar should use. This can be changed with                  |
 | initialDate  | `new Date()` | A date that should be shown at the start. Defaults to today.                     |
-| className    | `''`         | A CSS class name that will be applied to the calendar surrounding div.           |
 | children     | `null`       | All the elements within the calendar that might consume the calendar context.    |
 | timeStart    | `'0:00'`     | Start the calendar body at this time.                                            |
 | timeEnd      | `'24:00'`    | End the calendar body at this time.                                              |
