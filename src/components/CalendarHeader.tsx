@@ -1,4 +1,4 @@
-import { eachDayOfInterval } from 'date-fns/esm';
+import { eachDayOfInterval } from 'date-fns';
 import React, { CSSProperties, forwardRef, ReactNode } from 'react';
 import { useCalendar } from '../hooks/useCalendar';
 import { CalendarView } from '../types';
