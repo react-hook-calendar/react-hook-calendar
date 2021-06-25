@@ -1,8 +1,7 @@
 import { useMemo, CSSProperties } from 'react';
-import { areIntervalsOverlapping, getHours, getMinutes } from 'date-fns';
+import { areIntervalsOverlapping, getHours, getMinutes, differenceInDays } from 'date-fns';
 import { useCalendar } from './useCalendar';
 import { toDate } from '../util';
-import { differenceInDays } from 'date-fns/esm';
 
 export type UseAppointmentConfig = {
   start: Date | number | string;
