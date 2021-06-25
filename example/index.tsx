@@ -84,64 +84,57 @@ function App() {
 
 function CustomCalendar() {
   return (
-    <VStack
-      as={Calendar}
-      weekStartsOn={1}
-      timeStart="8:00"
-      timeEnd="20:00"
-      maxW="1200px"
-      w="100%"
-      h="100%"
-      spacing="8"
-    >
-      <Flex w="100%" justifyContent="space-between" alignItems="center">
-        <TodayButton />
-        <PageControl />
-        <ViewControl />
-      </Flex>
-      <Flex
-        flexGrow={1}
-        flexShrink={1}
-        direction="column"
-        w="100%"
-        bg="white"
-        rounded="lg"
-        overflow="hidden"
-      >
-        <Flex borderColor="blue.600" borderBottomWidth="2px">
-          <Center w="20" flexShrink={0} color="gray.500" fontSize="0.875rem">
-            GMT{timezoneOffset < 0 ? timezoneOffset : `+${timezoneOffset}`}
-          </Center>
-          <Box as={CalendarHeader} flexGrow={1}>
-            {({ date }) => (
-              <Center h="20" flexDirection="column" borderLeft="1px" borderColor="gray.100">
-                <Box fontSize="3xl">{getDate(date)}</Box>
-                <Box frontSize="md" color="blackAlpha.700" mt="-0.5em">
-                  {Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date)}
-                </Box>
-              </Center>
-            )}
-          </Box>
+    <Calendar weekStartsOn={1} timeStart="8:00" timeEnd="20:00">
+      <VStack maxW="1200px" w="100%" h="100%" spacing="8">
+        <Flex w="100%" justifyContent="space-between" alignItems="center">
+          <TodayButton />
+          <PageControl />
+          <ViewControl />
         </Flex>
-        <Flex direction="row" flexGrow={1}>
-          <Box flexShrink={0} w="20">
-            <TimeLegend />
-          </Box>
-          <Box h="100%" flexGrow={1} as={CalendarBody}>
-            <Box
-              as={CalendarGrid}
-              length="1 hour"
-              borderTopWidth="1px"
-              borderLeftWidth="1px"
-              borderColor="gray.100"
-            />
-            {appointments.map(appointment => (
-              <Appointment {...appointment} />
-            ))}
-          </Box>
+        <Flex
+          flexGrow={1}
+          flexShrink={1}
+          direction="column"
+          w="100%"
+          bg="white"
+          rounded="lg"
+          overflow="hidden"
+        >
+          <Flex borderColor="blue.600" borderBottomWidth="2px">
+            <Center w="20" flexShrink={0} color="gray.500" fontSize="0.875rem">
+              GMT{timezoneOffset < 0 ? timezoneOffset : `+${timezoneOffset}`}
+            </Center>
+            <Box as={CalendarHeader} flexGrow={1}>
+              {({ date }) => (
+                <Center h="20" flexDirection="column" borderLeft="1px" borderColor="gray.100">
+                  <Box fontSize="3xl">{getDate(date)}</Box>
+                  <Box frontSize="md" color="blackAlpha.700" mt="-0.5em">
+                    {Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date)}
+                  </Box>
+                </Center>
+              )}
+            </Box>
+          </Flex>
+          <Flex direction="row" flexGrow={1}>
+            <Box flexShrink={0} w="20">
+              <TimeLegend />
+            </Box>
+            <Box h="100%" flexGrow={1} as={CalendarBody}>
+              <Box
+                as={CalendarGrid}
+                length="1 hour"
+                borderTopWidth="1px"
+                borderLeftWidth="1px"
+                borderColor="gray.100"
+              />
+              {appointments.map(appointment => (
+                <Appointment {...appointment} />
+              ))}
+            </Box>
+          </Flex>
         </Flex>
-      </Flex>
-    </VStack>
+      </VStack>
+    </Calendar>
   );
 }
 
