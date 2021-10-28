@@ -86,7 +86,7 @@ function getViewPeriodStart(
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 ): Date {
   if (view === 'week') {
-    return referenceDate;
+    return startOfDay(referenceDate);
     return startOfWeek(referenceDate, { weekStartsOn });
   }
   if (view === 'day') {
