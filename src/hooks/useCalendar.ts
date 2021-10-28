@@ -7,6 +7,7 @@ export type CalendarContextType = {
   date: Date;
   view: CalendarView;
   viewPeriod: Interval;
+  daysNumber: number;
   viewTimes: { start: number; end: number };
   // Controls
   setDate: (date: Date) => void;
@@ -19,6 +20,7 @@ export const CalendarContext = createContext<CalendarContextType>({
   date: new Date(),
   view: 'week',
   viewPeriod: { start: startOfWeek(new Date()), end: endOfWeek(new Date()) },
+  daysNumber: 7,
   viewTimes: { start: 0, end: 24 * 60 * 60 * 1000 },
   setView: () => {},
   setDate: () => {},

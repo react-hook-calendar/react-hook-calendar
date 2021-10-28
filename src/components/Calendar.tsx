@@ -1,5 +1,5 @@
 import { endOfDay, endOfWeek, startOfDay, startOfWeek } from 'date-fns';
-import { addDays, addWeeks, subDays, subWeeks } from 'date-fns/fp';
+import { addDays, subDays } from 'date-fns/fp';
 import React, { useState, ReactNode, useCallback, useMemo } from 'react';
 import { CalendarContext } from '../hooks/useCalendar';
 import { CalendarView } from '../types';
@@ -16,6 +16,8 @@ export type CalendarProps = {
   timeStart?: string;
   /** Limit the view to appointments before this time */
   timeEnd?: string;
+  /** Number of days in a view */
+  daysNumber?: number;
   /** Configure the day, that the week should start on */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 };
@@ -28,6 +30,7 @@ export function Calendar({
   initialDate = new Date(),
   timeStart = '0:00',
   timeEnd = '24:00',
+  daysNumber = 7,
   weekStartsOn,
   children,
 }: CalendarProps) {
@@ -50,11 +53,11 @@ export function Calendar({
     timeEnd,
   ]);
 
-  const goForward = useCallback(() => setFocusDate(view === 'day' ? addDays(1) : addWeeks(1)), [
+  const goForward = useCallback(() => setFocusDate(view === 'week' ? addDays(1) : addDays(1)), [
     view,
   ]);
 
-  const goBackward = useCallback(() => setFocusDate(view === 'day' ? subDays(1) : subWeeks(1)), [
+  const goBackward = useCallback(() => setFocusDate(view === 'week' ? subDays(1) : subDays(1)), [
     view,
   ]);
 
@@ -66,6 +69,7 @@ export function Calendar({
         date: focusDate,
         setDate: setFocusDate,
         viewPeriod,
+        daysNumber,
         goForward,
         goBackward,
         viewTimes,
@@ -82,6 +86,7 @@ function getViewPeriodStart(
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 ): Date {
   if (view === 'week') {
+    return referenceDate;
     return startOfWeek(referenceDate, { weekStartsOn });
   }
   if (view === 'day') {
@@ -96,6 +101,7 @@ function getViewPeriodEnd(
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 ): Date {
   if (view === 'week') {
+    return addDays(2, referenceDate);
     return endOfWeek(referenceDate, { weekStartsOn });
   }
   if (view === 'day') {

@@ -42,7 +42,7 @@ export const CalendarHeader = forwardRef<HTMLDivElement, CalendarHeaderProps>(
   function CalendarHeader(props, ref) {
     const { view, viewPeriod } = useCalendar();
     const days = eachDayOfInterval(viewPeriod);
-    const gridTemplateColumns = view === 'day' ? '100%' : 'repeat(7, 1fr)';
+    const gridTemplateColumns = view === 'day' ? '100%' : 'repeat(3, 1fr)';
 
     return (
       <div

@@ -11,6 +11,7 @@
     "@chakra-ui/react": "^1.5.1",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
+    "esbuild": "^0.13.10",
     "framer-motion": "^4.1.4",
     "react-app-polyfill": "^1.0.0"
   },
