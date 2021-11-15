@@ -84,7 +84,7 @@ function App() {
 
 function CustomCalendar() {
   return (
-    <Calendar weekStartsOn={1} timeStart="8:00" timeEnd="20:00">
+    <Calendar weekStartsOn={1} timeStart="8:00" timeEnd="20:00" customDays={4}>
       <VStack maxW="1200px" w="100%" h="100%" spacing="8">
         <Flex w="100%" justifyContent="space-between" alignItems="center">
           <TodayButton />
@@ -143,7 +143,7 @@ function ViewControl() {
   const onChange = React.useCallback<React.ChangeEventHandler<HTMLSelectElement>>(
     event => {
       const newValue = event.currentTarget.value;
-      if (newValue === 'week' || newValue === 'day') {
+      if (newValue === 'week' || newValue === 'day' || newValue === 'custom') {
         setView(newValue);
       }
     },
@@ -163,6 +163,7 @@ function ViewControl() {
       >
         <option value="week">Week</option>
         <option value="day">Day</option>
+        <option value="custom">Custom</option>
       </Select>
     </div>
   );

@@ -16,6 +16,8 @@ export type CalendarProps = {
   timeStart?: string;
   /** Limit the view to appointments before this time */
   timeEnd?: string;
+  /** Number of days in a view */
+  customDays: number;
   /** Configure the day, that the week should start on */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 };
@@ -28,6 +30,7 @@ export function Calendar({
   initialDate = new Date(),
   timeStart = '0:00',
   timeEnd = '24:00',
+  customDays = 7,
   weekStartsOn,
   children,
 }: CalendarProps) {
@@ -40,7 +43,7 @@ export function Calendar({
   const viewPeriod = useMemo(
     () => ({
       start: getViewPeriodStart(view, focusDate, weekStartsOn),
-      end: getViewPeriodEnd(view, focusDate, weekStartsOn),
+      end: getViewPeriodEnd(view, focusDate, customDays, weekStartsOn),
     }),
     [view, focusDate]
   );
@@ -50,11 +53,11 @@ export function Calendar({
     timeEnd,
   ]);
 
-  const goForward = useCallback(() => setFocusDate(view === 'day' ? addDays(1) : addWeeks(1)), [
+  const goForward = useCallback(() => setFocusDate(view === 'week' ? addWeeks(1) : addDays(1)), [
     view,
   ]);
 
-  const goBackward = useCallback(() => setFocusDate(view === 'day' ? subDays(1) : subWeeks(1)), [
+  const goBackward = useCallback(() => setFocusDate(view === 'week' ? subWeeks(1) : subDays(1)), [
     view,
   ]);
 
@@ -66,6 +69,7 @@ export function Calendar({
         date: focusDate,
         setDate: setFocusDate,
         viewPeriod,
+        customDays,
         goForward,
         goBackward,
         viewTimes,
@@ -87,12 +91,16 @@ function getViewPeriodStart(
   if (view === 'day') {
     return startOfDay(referenceDate);
   }
+  if (view === 'custom') {
+    return startOfDay(referenceDate);
+  }
   throw new Error('Unknown view value `' + view + '`.');
 }
 
 function getViewPeriodEnd(
   view: CalendarView,
   referenceDate: Date,
+  customDays: number,
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
 ): Date {
   if (view === 'week') {
@@ -100,6 +108,9 @@ function getViewPeriodEnd(
   }
   if (view === 'day') {
     return endOfDay(referenceDate);
+  }
+  if (view === 'custom') {
+    return endOfDay(addDays(customDays - 1, referenceDate));
   }
   throw new Error('Unknown view value `' + view + '`.');
 }

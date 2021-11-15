@@ -40,9 +40,16 @@ export type CalendarHeaderProps = {
  */
 export const CalendarHeader = forwardRef<HTMLDivElement, CalendarHeaderProps>(
   function CalendarHeader(props, ref) {
-    const { view, viewPeriod } = useCalendar();
+    const { view, viewPeriod, customDays } = useCalendar();
     const days = eachDayOfInterval(viewPeriod);
-    const gridTemplateColumns = view === 'day' ? '100%' : 'repeat(7, 1fr)';
+    let gridTemplateColumns = '100%';
+    if (view === 'week') {
+      gridTemplateColumns = 'repeat(7, 1fr)';
+
+    }
+    if (view === 'custom') {
+      gridTemplateColumns = `repeat(${customDays}, 1fr)`;
+    }
 
     return (
       <div

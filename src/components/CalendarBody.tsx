@@ -8,9 +8,16 @@ export type CalendarBodyProps = {
 };
 
 export function CalendarBody(props: CalendarBodyProps) {
-  const { view, viewTimes } = useCalendar();
+  const { view, viewTimes, customDays } = useCalendar();
   const numRows = (viewTimes.end - viewTimes.start) / (15 * 60 * 1000);
-  const gridTemplateColumns = view === 'day' ? '100%' : 'repeat(7, 1fr)';
+  let gridTemplateColumns = '100%';
+  if (view === 'week') {
+    gridTemplateColumns = 'repeat(7, 1fr)';
+
+  }
+  if (view === 'custom') {
+    gridTemplateColumns = `repeat(${customDays}, 1fr)`;
+  }
   return (
     <div
       style={{
