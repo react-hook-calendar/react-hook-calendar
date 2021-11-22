@@ -13,7 +13,6 @@ export function CalendarBody(props: CalendarBodyProps) {
   let gridTemplateColumns = '100%';
   if (view === 'week') {
     gridTemplateColumns = 'repeat(7, 1fr)';
-
   }
   if (view === 'custom') {
     gridTemplateColumns = `repeat(${customDays}, 1fr)`;
