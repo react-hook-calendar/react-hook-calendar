@@ -17,7 +17,7 @@ export type CalendarProps = {
   /** Limit the view to appointments before this time */
   timeEnd?: string;
   /** Number of days in a view */
-  customDays: number;
+  customDays?: number;
   /** Configure the day, that the week should start on */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 };
@@ -30,7 +30,7 @@ export function Calendar({
   initialDate = new Date(),
   timeStart = '0:00',
   timeEnd = '24:00',
-  customDays = 7,
+  customDays = 4,
   weekStartsOn,
   children,
 }: CalendarProps) {
@@ -53,13 +53,15 @@ export function Calendar({
     timeEnd,
   ]);
 
-  const goForward = useCallback(() => setFocusDate(view === 'week' ? addWeeks(1) : addDays(1)), [
-    view,
-  ]);
+  const goForward = useCallback(
+    () => setFocusDate(view === 'week' ? addWeeks(1) : addDays(view === 'day' ? 1 : customDays)),
+    [view],
+  );
 
-  const goBackward = useCallback(() => setFocusDate(view === 'week' ? subWeeks(1) : subDays(1)), [
-    view,
-  ]);
+  const goBackward = useCallback(
+    () => setFocusDate(view === 'week' ? subWeeks(1) : subDays(view === 'day' ? 1 : customDays)),
+    [view],
+  );
 
   return (
     <CalendarContext.Provider
@@ -88,10 +90,7 @@ function getViewPeriodStart(
   if (view === 'week') {
     return startOfWeek(referenceDate, { weekStartsOn });
   }
-  if (view === 'day') {
-    return startOfDay(referenceDate);
-  }
-  if (view === 'custom') {
+  if (view === 'day' || view === 'custom') {
     return startOfDay(referenceDate);
   }
   throw new Error('Unknown view value `' + view + '`.');

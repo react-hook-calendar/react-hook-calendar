@@ -189,7 +189,7 @@ function PageControl() {
 
   // Displaying the view period
   let date = format(viewPeriod.start, 'MMMM d');
-  if (view === 'week') {
+  if (view !== 'day') {
     date = format(viewPeriod.start, 'MMM d') + ' - ' + format(viewPeriod.end, 'MMM d');
   }
   return (
