@@ -53,13 +53,15 @@ export function Calendar({
     timeEnd,
   ]);
 
-  const goForward = useCallback(() => setFocusDate(view === 'week' ? addWeeks(1) : addDays(1)), [
-    view,
-  ]);
+  const goForward = useCallback(
+    () => setFocusDate(view === 'week' ? addWeeks(1) : addDays(view === 'day' ? 1 : customDays)),
+    [view],
+  );
 
-  const goBackward = useCallback(() => setFocusDate(view === 'week' ? subWeeks(1) : subDays(1)), [
-    view,
-  ]);
+  const goBackward = useCallback(
+    () => setFocusDate(view === 'week' ? subWeeks(1) : subDays(view === 'day' ? 1 : customDays)),
+    [view],
+  );
 
   return (
     <CalendarContext.Provider
