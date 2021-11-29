@@ -128,12 +128,13 @@ The calendar context can be consumed via the [`useCalendar()`](#useCalendar) hoo
 
 | Property     | Default      | Description                                                                      |
 | ------------ | ------------ | -------------------------------------------------------------------------------- |
-| defaultView  | `week`       | The view that the calendar should use. This can be changed with                  |
+| defaultView  | `week`       | The view that the calendar shows in the beginning.                               |
 | initialDate  | `new Date()` | A date that should be shown at the start. Defaults to today.                     |
 | children     | `null`       | All the elements within the calendar that might consume the calendar context.    |
 | timeStart    | `'0:00'`     | Start the calendar body at this time.                                            |
 | timeEnd      | `'24:00'`    | End the calendar body at this time.                                              |
 | weekStartsOn | `0`          | Configure the day, that the week should start on. `0` is Sunday (see `date-fns`) |
+| customDays   | `4`          | Defines how many days should be displayed in the "custom" view                   |
 
 ### `useCalendar()`
 
@@ -142,7 +143,7 @@ This hook exposes the calendar state (such as the current view, the current date
 | Value      | Type                             | Description                                                |
 | ---------- | -------------------------------- | ---------------------------------------------------------- |
 | date       | `Date`                           | Current focus date, will always be within the `viewPeriod` |
-| view       | `CalendarView`                   | Current view (enum: `'day' \| 'week'`)                     |
+| view       | `CalendarView`                   | Current view (enum: `'day' \| 'week' \| 'custom'`)         |
 | viewPeriod | `{ start: Date, end: Date }`     | Currently shown period (calculated from `date` and `view`) |
 | viewTimes  | `{ start: number; end: number }` | `timeStart` and `timeEnd` translated to numbers            |
 | setDate    | `(date: Date) => void`           | Set the focus date, useful for jumping to a day or week    |
@@ -206,7 +207,7 @@ This component must be rendered within a `CalendarBody` component.
 
 Hook that implements the logic of the `Appointment` component.
 This is useful, if you want to build your own component for appointments.
-Make sure to hand over the `style` value to your wrapping element.
+Make sure to hand over the `style` value to your wrapping element and render within a `CalendarBody` component.
 
 | Value    | Type                         | Description                                                            |
 | -------- | ---------------------------- | ---------------------------------------------------------------------- |
