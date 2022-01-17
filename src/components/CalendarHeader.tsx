@@ -45,7 +45,6 @@ export const CalendarHeader = forwardRef<HTMLDivElement, CalendarHeaderProps>(
     let gridTemplateColumns = '100%';
     if (view === 'week') {
       gridTemplateColumns = 'repeat(7, 1fr)';
-
     }
     if (view === 'custom') {
       gridTemplateColumns = `repeat(${customDays}, 1fr)`;

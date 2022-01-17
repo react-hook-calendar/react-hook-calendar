@@ -12,12 +12,10 @@
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
     "framer-motion": "^5.3.3",
-    "react-app-polyfill": "^2.0.0"
-  },
-  "alias": {
-    "react": "../node_modules/react",
-    "react-dom": "../node_modules/react-dom/profiling",
-    "scheduler/tracing": "../node_modules/scheduler/tracing-profiling"
+    "nanoid": "^3.2.0",
+    "react": "file:../node_modules/react",
+    "react-app-polyfill": "^3.0.0",
+    "react-dom": "file:../node_modules/react-dom"
   },
   "devDependencies": {
     "@types/react": "^17.0.37",
