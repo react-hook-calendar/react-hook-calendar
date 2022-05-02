@@ -1,6 +1,7 @@
 import 'react-app-polyfill/ie11';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { nanoid } from 'nanoid'
 import {
   Box,
   Button,
@@ -108,7 +109,7 @@ function CustomCalendar() {
               {({ date }) => (
                 <Center h="20" flexDirection="column" borderLeft="1px" borderColor="gray.100">
                   <Box fontSize="3xl">{getDate(date)}</Box>
-                  <Box frontSize="md" color="blackAlpha.700" mt="-0.5em">
+                  <Box fontSize="md" color="blackAlpha.700" mt="-0.5em">
                     {Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date)}
                   </Box>
                 </Center>
@@ -128,7 +129,7 @@ function CustomCalendar() {
                 borderColor="gray.100"
               />
               {appointments.map(appointment => (
-                <Appointment {...appointment} />
+                <Appointment key={appointment.start+'-'+appointment.end} {...appointment} />
               ))}
             </Box>
           </Flex>
@@ -223,6 +224,7 @@ function TimeLegend() {
     <ChakraGrid width="100%" height="100%" templateRows={`repeat(${numHours}, 1fr)`}>
       {Array.apply(null, Array(numHours)).map((_, index) => (
         <GridItem
+          key={index + startHour}
           rowStart={index * 1 + 1}
           display="flex"
           justifyContent="flex-end"
@@ -259,10 +261,10 @@ function Appointment(props: { start: Date; end: Date; title: string; color: stri
       >
         {differenceInMinutes(interval.end, interval.start) > 60 ? (
           [
-            <Box fontWeight="600" color="white">
+            <Box key={nanoid()} fontWeight="600" color="white">
               {props.title}
             </Box>,
-            <Box fontSize="0.75em" color="whiteAlpha.900">
+            <Box key={nanoid()} fontSize="0.75em" color="whiteAlpha.900">
               {format(interval.start, 'HH:mm')} - {format(interval.end, 'HH:mm')}
             </Box>,
           ]

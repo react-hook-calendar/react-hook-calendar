@@ -38,6 +38,7 @@ export function CalendarGrid({
           const gridColumnStart = dayIndex + 1;
           return (
             <div
+              key={timeIndex+'-'+dayIndex}
               className={className}
               style={{
                 gridRowStart,
